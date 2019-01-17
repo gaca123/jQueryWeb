@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>JQuery App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+        <!-- bootstrap -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/back.css">
+        <link rel="stylesheet" href="css/stellarnav.min.css">
+        <link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+        <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+        <!-- handlebars -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+
+        <!-- alpaca -->
+        <link type="text/css" href="//code.cloudcms.com/alpaca/1.5.24/bootstrap/alpaca.min.css" rel="stylesheet" />
+        <script type="text/javascript" src="//code.cloudcms.com/alpaca/1.5.24/bootstrap/alpaca.min.js"></script>
+        <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+
+        <script src="js/stellarnav.js"></script>
+        <script type="text/javascript">
+            function loadMenu() {
+                jQuery('#main-nav').stellarNav({
+                    theme: 'dark',
+
+                    breakpoint: 768,
+
+                    phoneBtn: false,
+
+                    locationBtn: false,
+
+                    sticky: true,
+
+                    openingSpeed: 250,
+
+                    closingDelay: 250,
+
+                    position: 'static',
+
+                    showArrows: true,
+
+                    closeBtn: false,
+                    scrollbarFix: false,
+                    mobileMode: false
+                });
+
+            }
+            ;
+        </script>
+    </head>
+    <body onload="loadMenu()">
+        <div id="main-nav" class="stellarnav">
+
+            <ul>
+
+                <li><a target="_blank" href="http://www.alpacajs.org/" >Alpaca official page</a></li>
+
+                <li><a target="_blank" href="http://schemaform.io/">Angular official page</a></li>
+
+                <li><a target="_blank" href="https://github.com/mozilla-services/react-jsonschema-form">React official page</a></li>
+
+                <li><a href="#">Examples</a>
+
+                    <ul>
+                        <li><a href="http://localhost:8383/jqueryExamples/example1.html">Example1</a></li>
+                        <li><a href="http://localhost:8383/jqueryExamples/example2.html">Example2</a></li>
+                        <li><a href="http://localhost:8383/jqueryExamples/example3.html">Example3</a></li>
+                        <li><a href="http://localhost:8383/jqueryExamples/example4.html">Example4</a></li>
+                    </ul>
+
+                </li>
+
+
+
+
+            </ul>
+
+        </div>
+        <form></form>
+
+        <script type="text/javascript" src="https://momentjs.com/downloads/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript">
+        function generate() {
+            $.ajax({
+                method: 'GET',
+                url: 'http://localhost:9090/schemaExample1',
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "SILAB-TOKEN": "U3RlZmFuOkdhY2E=", }
+                ,
+                success: function (schema) {
+                    $.ajax({
+                        method: 'GET',
+                        url: 'http://localhost:9090/formExample1',
+                        contentType: "application/json; charset=utf-8",
+                        headers: {
+                            "SILAB-TOKEN": "U3RlZmFuOkdhY2E=", }
+                        ,
+                        success: function (options) {
+
+                            /*$('form').alpaca({
+                             schema: dataMain,
+                             data:dataM,
+                             });*/
+
+                            $.ajax({
+                                method: 'GET',
+                                url: 'http://localhost:9090/modelExample1',
+                                contentType: "application/json; charset=utf-8",
+                                headers: {
+                                    "SILAB-TOKEN": "U3RlZmFuOkdhY2E=", }
+                                ,
+                                success: function (data) {
+
+                                    options.form.buttons.check.click = function () {
+                                        alert(JSON.stringify(this.getValue(), null, "  "));
+                                    };
+                                    $('form').alpaca({
+                                        schema: schema,
+                                        options: options,
+                                        data: data,
+                                        "postRender": function (control) {
+                                            control.childrenByPropertyId["name"].getFieldEl().css("background-color", "lightgreen");
+                                            control.childrenByPropertyId["name"].getFieldEl().css("color", "red");
+                                        }
+                                    });
+
+                                }
+                                ,
+                                error: function () {
+                                    alert("Error");
+                                }
+
+                            }
+                            )
+
+                        }
+                        ,
+                        error: function () {
+                            alert("Error");
+                        }
+
+                    }
+                    )
+
+                }
+                ,
+                error: function () {
+                    alert("Error");
+                }
+
+            }
+            );
+
+            /** $.ajax({
+             url: "http://localhost:8080/api/ui"
+             }).then(function (data) {
+             $('.greeting-id').append(data.id);
+             $('.greeting-content').append(data.content);
+             });*/
+        }
+
+        </script>                                
+
+        <br>
+        <button type="button" onclick="generate()" class="btn btn-primary btn-block">Generate fields</button>
+    </body>
+</html>
